@@ -8,7 +8,7 @@ class Wrapper(object):
 		self.connect = MySQLdb.connect(*args)
 
 
-	def select_all(self, columns, table_names, condition = ""):
+	def select(self, columns, table_names, condition = ""):
 		if not isinstance(table_names, basestring):
 		    table_names = ", ".join(table_names)
 
@@ -38,9 +38,24 @@ class Wrapper(object):
 			print e
 
 
+	def insert(self, diction, table_names, condition = ""):
+		if not isinstance(table_names, basestring):
+		    table_names = ", ".join(table_names)
+
+		if isinstance(diction, dict):
+		    diction = ", ".join("{}='{}'".format(k, v) for k, v in diction.items())
+
+		try:
+			cursor = self.connect.cursor()
+			cursor.execute("insert into {0} values {1} {2}".format(table_names, diction, condition))
+			self.connect.commit()
+		except Exception, e:
+			print e
+
+
 	def __del__(self):
 		self.connect.close()
 
 
-print Wrapper(Conf().read()).select_all(["id", "fname", "lname"], ["person"])
+print Wrapper(Conf().read()).select(["id", "fname", "lname"], ["person"])
 # Wrapper(Conf().read()).update({"fname" : "Ivan", "lname" : "Kvas"}, "person", "where id = 2")
