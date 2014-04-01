@@ -47,7 +47,7 @@ class Wrapper(object):
 
 		try:
 			cursor = self.connect.cursor()
-			cursor.execute("insert into {0} values {1} {2}".format(table_names, diction, condition))
+			cursor.execute("insert into ({0}) values ({1}) {2}".format(table_names, diction, condition))
 			self.connect.commit()
 		except Exception, e:
 			print e
