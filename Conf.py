@@ -3,8 +3,8 @@ config = ConfigParser.RawConfigParser()
 
 class Conf:
 	"""class Conf for writing and reading config DB"""
-	def __init__(self):
-		self.section = "MySQL"
+	def __init__(self, section = "MySQL"):
+		self.section = section
 		self.file_name = "conf.cfg"
 
 
